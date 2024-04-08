@@ -1,0 +1,11 @@
+@import "../../styles/colors";
+@import "../../styles/sizes";
+
+.title {
+  color: $turnex-alabaster-900;
+  font-family: Rubik;
+  font-size: $turnex-spacing-48;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+}

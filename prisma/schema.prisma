@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  name              String?
+  email             String?   @unique
+  emailVerified     DateTime?
+  image             String?
+  lastName          String?
+  password          String?
+  active            Boolean          @default(true)
+  termAndConditions Boolean          @default(true)
+  createAt          DateTime         @default(now())
+  updatedAt         DateTime         @default(now())
+  shifts            UserShift[]
+  packs             UserPack[]
+  accounts          Account[]
+  sessions          Session[]
+  permissions       PermissionUser[]
+
+  @@map(name: "users") // Cambia el nombre de la tabla a "users"
+}
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+
+model Permission {
+  id          Int      @id @default(autoincrement())
+  description String
+  active      Boolean          @default(true)
+  createAt    DateTime         @default(now())
+  updatedAt   DateTime         @default(now())
+  users       PermissionUser[]
+
+  @@map(name: "permissions") // Cambia el nombre de la tabla a "permissions"
+}
+
+model Pack {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  duration    String
+  active      Boolean
+  createAt    DateTime   @default(now())
+  updatedAt   DateTime   @default(now())
+  users       UserPack[]
+
+  @@map(name: "packs") // Cambia el nombre de la tabla a "packs"
+}
+
+
+model Shift {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  date         DateTime    @default(now())
+  clientId     String
+  specialityID String
+  active       Boolean     @default(true)
+  createAt     DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+  users        UserShift[]
+
+  @@map(name: "shifts") // Cambia el nombre de la tabla a "shifts"
+}
+
+model PermissionUser {
+  permissionId Int
+  userId       String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+
+  @@id([permissionId, userId])
+  @@map(name: "user_permissions")
+}
+
+model UserPack {
+  userId String
+  packId Int
+  user   User @relation(fields: [userId], references: [id])
+  pack   Pack @relation(fields: [packId], references: [id])
+
+  @@id([userId, packId])
+  @@map(name: "user_packs")
+}
+
+model UserShift {
+  userId  String
+  shiftId Int
+  user    User  @relation(fields: [userId], references: [id])
+  shift   Shift @relation(fields: [shiftId], references: [id])
+
+  @@id([userId, shiftId])
+  @@map(name: "user_shifts")
+}

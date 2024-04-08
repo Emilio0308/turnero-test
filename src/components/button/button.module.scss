@@ -1,0 +1,33 @@
+@import "../../styles/colors";
+@import "../../styles/sizes";
+@import "../../styles/breakpoints";
+
+.button {
+  display: flex;
+  width: 400px;
+  padding: $turnex-spacing-14 $turnex-spacing-24;
+  justify-content: center;
+  align-items: center;
+  gap: $turnex-spacing-8;
+  border-radius: $turnex-spacing-8;
+  background: $turnex-primary-800;
+  cursor: pointer;
+
+  &__text {
+    color: $turnex-white-50;
+    font-family: Rubik;
+    font-size: $turnex-spacing-16;
+    font-style: normal;
+    font-weight: 500;
+    line-height: $turnex-spacing-24;
+  }
+
+  &__disabled {
+    background: $turnex-alabaster-100;
+    cursor: not-allowed;    
+  }
+
+  &__disabled_text {
+    color: $turnex-alabaster-400;
+  }
+}
