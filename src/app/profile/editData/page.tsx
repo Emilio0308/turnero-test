@@ -13,7 +13,7 @@ interface FormData {
 
 export default function EditData() {
   const { data: session, update } = useSession();
-  // console.log(session);
+  console.log(session);
   const axiosAuth = useAxiosAuth();
   const username = session?.userData?.name;
   const lastName = session?.userData?.lastname;

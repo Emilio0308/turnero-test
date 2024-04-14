@@ -27,3 +27,20 @@ declare module "next-auth" {
     userData: UserData;
   }
 }
+
+declare module "next-auth" {
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified?: boolean | null;
+    image?: string | null;
+    lastname?: string;
+    password?: string;
+    active?: boolean;
+    termAndConditions?: boolean;
+    createAt?: string | Date;
+    updatedAt?: string | Date;
+    accessToken?: string | Date;
+  }
+}

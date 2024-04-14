@@ -34,25 +34,29 @@ export const authOptions: NextAuthOptions = {
           if (!credentials?.email || !credentials?.password) {
             return null;
           }
-          const existingUser = await prisma.user.findFirst({
-            where: { email: credentials?.email },
+          const url = "http://localhost:3000/api/auth/users/logIn";
+
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
           });
-          if (!existingUser) {
-            return null;
-          }
-          const passwordMatch = await compare(
-            credentials?.password,
-            existingUser.password || ""
-          );
-          console.log(credentials?.password);
-          if (!passwordMatch) {
-            return null;
-          }
+
+          const { body } = await response.json();
+
+          console.log(body.id_token);
           return {
-            id: String(existingUser.id),
-            name: existingUser.name,
-            lastName: existingUser.lastName,
-            email: existingUser.email,
+            id: String(body.id),
+            name: body.name,
+            lastName: body.lastName,
+            email: body.email,
+            picture: body.image,
+            accessToken: body.id_token,
           };
         } catch (error) {
           console.log(error);
@@ -68,22 +72,13 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt(data) {
-      const generateJWT = () => {
-        const secret = process.env.NEXTAUTH_SECRET as string;
-        const payload = { ...token, id: token.sub };
-        const customToken = jwt.sign(payload, secret);
-        return customToken;
-      };
       const { token, account, user, session, trigger } = data;
       console.log("callback jwt", data);
+
       if (user) {
         console.log("callbackjwt existe user", user);
+        token.accessToken = user.accessToken
       }
-      if (account) {
-        token.id = token.sub;
-        token.accessToken = account.id_token || generateJWT();
-      }
-
       if (trigger == "update") {
         const rst = {
           ...token,
@@ -95,20 +90,9 @@ export const authOptions: NextAuthOptions = {
     },
     async session(data) {
       const { session, token } = data;
+      console.log(data)
       const rst = {
         ...session,
-        // userData: {
-        //   id: token.id as string,
-        //   name: token.name as string,
-        //   email: token.email as string,
-        //   exp: token.exp as number,
-        //   iat: token.iat as number,
-        //   jti: token.jti as string,
-        //   lastname: token.lastname as string,
-        //   picture: token.picture as string,
-        //   sub: token.sub as string,
-        //   accessToken: token.accessToken as string,
-        // },
         userData: token,
         token: token.accessToken as string,
       };

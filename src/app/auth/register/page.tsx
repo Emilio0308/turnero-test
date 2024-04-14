@@ -38,12 +38,18 @@ export default function RegisterPage() {
 
       const userNew = {
         ...data,
+        lastname: data.lastName,
         permissions: [1],
         packs: [1],
         shifts: [1],
       };
 
-      const res = await axios.post("/api/auth/users/register", userNew);
+      console.log(data)
+      // const res = await axios.post("/api/auth/users/register", userNew);
+      const res = await axios.post(
+        "https://xuhwe49mk9.execute-api.us-east-2.amazonaws.com/api/auth/users/register",
+        userNew
+      );
 
       if (res.status === 200) {
         Swal.fire({
@@ -56,6 +62,7 @@ export default function RegisterPage() {
         router.refresh();
       }
     } catch (error) {
+      console.log(error)
       const err = error as AxiosError;
       let title = "Error desconocido";
       let text = err.message;
