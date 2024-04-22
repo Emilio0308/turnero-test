@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
-
+import { useSession } from "next-auth/react";
 import Button from "@/components/button/Button";
 import styles from "../../../styles/form.module.scss";
 import globals from "../../../styles/globals.module.scss";
@@ -20,7 +20,19 @@ export default function RegisterPage() {
   } = useForm({
     mode: "onSubmit",
   });
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  if (status === "loading") {
+    return <p>Cargando...</p>;
+  }
+
+  if (status === "authenticated") {
+    router.push("/packs");
+    return <p>Redireccionando...</p>;
+  }
+
+
   const showPassword = () => {
     setVisiblePassword(!visiblePassword);
   };
@@ -37,17 +49,17 @@ export default function RegisterPage() {
       }
 
       const userNew = {
-        ...data,
+        name: data.name,
         lastname: data.lastName,
-        permissions: [1],
-        packs: [1],
-        shifts: [1],
+        email : data.email,
+        password: data. password,        
+       
       };
 
       console.log(data)
       // const res = await axios.post("/api/auth/users/register", userNew);
       const res = await axios.post(
-        "https://xuhwe49mk9.execute-api.us-east-2.amazonaws.com/api/auth/users/register",
+        "https://s7zuvuun2j.execute-api.us-east-2.amazonaws.com/api/auth/users/register",
         userNew
       );
 

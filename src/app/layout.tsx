@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/Navbar';
+import NavbarAdmin from '@/components/admin/NavBarAdmin';
 import globals from '../styles/globals.module.scss';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/libs/auth';
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+ 
+  const isAdmin = true; 
   const session = await getServerSession(authOptions);
   return (
     <html lang="en">
@@ -19,7 +22,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <body className={globals.container} suppressHydrationWarning={true}>
           {
             session ?
-              <div className="hidden md:block lg:block xl:block"> <Navbar /></div>
+            <div className="hidden md:block lg:block xl:block">
+            {isAdmin ? <NavbarAdmin /> : <Navbar />}
+          </div>
+          
               : ''
           }
 

@@ -128,7 +128,7 @@ export default function EditData() {
               onChange={handleChange}
               className="w-full h-12 px-4 py-3.5 bg-gray-50 rounded-lg border border-slate-400 text-slate-700 text-base font-normal font-Rubik leading-normal focus:outline-none focus:border-blue-500"
               placeholder={email}
-              type="text"
+              type="email"
               id="email"
               name="email"
             />

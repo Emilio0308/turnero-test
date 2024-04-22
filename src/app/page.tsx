@@ -1,8 +1,24 @@
+"use client"
 import Button from "@/components/button/Button";
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import {FadeLoader} from "react-spinners" 
 export default function HomePage() {
 
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === "loading") {
+    return 
+  
+      <FadeLoader color="#a336d6" />;  // Tu código que maneja la carga
+  }
+
+  if (status === "authenticated") {
+    router.push("/packs");
+
+  }
 
   return (
     <div className="py-28 px-20">
@@ -18,7 +34,9 @@ export default function HomePage() {
               </div>
             </div>
             <div className="Frame152 flex-col justify-start items-start gap-4 flex">
+            <Link href="/auth/register">
               <Button text="Registrarme" type="submit" disabled={false} />
+                </Link>
               <div className="Frame146 flex-col justify-start items-center gap-2 flex">
                 <div className="YaTienesCuenta w-96 text-center text-alabaster-500 text-base font-normal font-['Rubik'] leading-normal cursor-pointer">
                   ¿Ya tienes cuenta?

@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
           if (!credentials?.email || !credentials?.password) {
             return null;
           }
-          const url = "http://localhost:3000/api/auth/users/logIn";
+          const url = "https://s7zuvuun2j.execute-api.us-east-2.amazonaws.com/api/auth/users/logIn";
 
           const response = await fetch(url, {
             method: "POST",
@@ -49,7 +49,7 @@ export const authOptions: NextAuthOptions = {
 
           const { body } = await response.json();
 
-          console.log(body.id_token);
+          console.log(body);
           return {
             id: String(body.id),
             name: body.name,
@@ -57,6 +57,8 @@ export const authOptions: NextAuthOptions = {
             email: body.email,
             picture: body.image,
             accessToken: body.id_token,
+            role: body.role,
+      
           };
         } catch (error) {
           console.log(error);

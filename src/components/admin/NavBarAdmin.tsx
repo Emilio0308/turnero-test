@@ -1,13 +1,14 @@
+"use client";
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/libs/auth";
-import SignOutButton from "./SignOutButton";
+import SignOutButton from "../SignOutButton";
+import { useSession } from "next-auth/react";
 
-const Navbar = async () => {
-  const session = await getServerSession(authOptions);
+export default function NavBarAdmin() {
+  const session = useSession();
+  console.log(session);
 
-  
-  return (
+  return(
+
     <nav className="Navbar h-12 justify-start items-center inline-flex w-full max-w-screen-2xl py-0 mx-auto flex-col md:flex-row mb-20">
       <Link className="Logo justify-start items-center gap-3 flex" href={""}>
         <div className="Flowbite">
@@ -21,34 +22,27 @@ const Navbar = async () => {
       </Link>
       <div className="NavLinks grow shrink basis-0 h-6 justify-start items-center gap-8 flex">
         <Link
-          href="/packs"
+          href="/admin/admin/"
           className="Link flex-col justify-center items-start inline-flex"
         >
           <p className="text-alabaster-900 text-center hover:text-primary-800 px-3 py-2 text-base font-medium font-['Rubik'] leading-normal">
             Inicio
           </p>
         </Link>
+         <Link
+          href="/admin/admin/empresas"
+          className="Link flex-col justify-center items-start inline-flex"
+        >
+          <p className="text-alabaster-900 text-center hover:text-primary-800 px-3 py-2 text-base font-medium font-['Rubik'] leading-normal">
+            Empresas
+          </p>
+        </Link>
+        
+      <SignOutButton /> 
+  
 
-        <Link
-          href="/shifts"
-          className="Link flex-col justify-center items-start inline-flex"
-        >
-          <div className="text-alabaster-900 text-center hover:text-primary-800 px-3 py-2 font-medium font-['Rubik'] leading-normal">
-            Turnos
-          </div>
-        </Link>
-        <Link
-          href="/profile"
-          className="Link flex-col justify-center items-start inline-flex"
-        >
-          <div className="text-alabaster-900 text-center hover:text-primary-800 px-3 py-2 text-base font-medium font-['Rubik'] leading-normal">
-            Perfil
-          </div>
-        </Link>
-        {session?.user ? <SignOutButton /> : ""}
       </div>
     </nav>
   );
 };
 
-export default Navbar;
