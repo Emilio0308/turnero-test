@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import Button from "@/components/button/Button";
 import Title from "@/components/title/Title";
 import { signIn, useSession } from "next-auth/react";
@@ -24,17 +24,11 @@ export default function Login() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-
-  if (status === "loading") {
-    return 
-    setTimeout(function() {
-      <FadeLoader color="#a336d6" />;  // Tu código que maneja la carga
-  }, 3000); 
-  }
+  
 
   if (status === "authenticated") {
     router.push("/packs");
-    return <p>Redireccionando...</p>;
+
   }
 
 

@@ -80,6 +80,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         console.log("callbackjwt existe user", user);
         token.accessToken = user.accessToken
+        token.role = user.role
       }
       if (trigger == "update") {
         const rst = {

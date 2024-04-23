@@ -7,14 +7,12 @@ import globals from "../../../../styles/globals.module.scss";
 import { useForm } from 'react-hook-form';
 import Button from "@/components/button/Button";
 const PackSchema = z.object({
+    serviceId: z.string(),
     name: z.string(),
-    description: z.string(),
+    descriptcion: z.string(),
     price: z.number(),
-    currency: z.string(),
-    duration: z.string(),
-    extra_data: z.record(z.unknown()),
-});
-
+    quantityclass: z.number(),
+})
 
 export default async function createPacks() {
 
