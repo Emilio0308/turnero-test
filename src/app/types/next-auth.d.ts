@@ -37,6 +37,7 @@ declare module "next-auth" {
     image?: string | null;
     lastname?: string;
     password?: string;
+    role: string;
     active?: boolean;
     termAndConditions?: boolean;
     createAt?: string | Date;

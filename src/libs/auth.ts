@@ -34,12 +34,15 @@ export const authOptions: NextAuthOptions = {
           if (!credentials?.email || !credentials?.password) {
             return null;
           }
-          const url = "http://localhost:3000/api/auth/users/logIn";
+
+          const url =
+            "https://s7zuvuun2j.execute-api.us-east-2.amazonaws.com/api/auth/users/logIn";
 
           const response = await fetch(url, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "tenant": 'client-test'
             },
             body: JSON.stringify({
               email: credentials?.email,
@@ -49,7 +52,7 @@ export const authOptions: NextAuthOptions = {
 
           const { body } = await response.json();
 
-          console.log(body.id_token);
+          console.log(body.role);
           return {
             id: String(body.id),
             name: body.name,
@@ -57,6 +60,7 @@ export const authOptions: NextAuthOptions = {
             email: body.email,
             picture: body.image,
             accessToken: body.id_token,
+            role: body.role,
           };
         } catch (error) {
           console.log(error);
@@ -73,11 +77,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt(data) {
       const { token, account, user, session, trigger } = data;
-      console.log("callback jwt", data);
+      // console.log("callback jwt", data);
 
       if (user) {
-        console.log("callbackjwt existe user", user);
-        token.accessToken = user.accessToken
+        // console.log("callbackjwt existe user", user);
+        token.accessToken = user.accessToken;
+        token.role = user.role;
       }
       if (trigger == "update") {
         const rst = {
@@ -90,7 +95,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session(data) {
       const { session, token } = data;
-      console.log(data)
+      // console.log(data)
       const rst = {
         ...session,
         userData: token,
@@ -99,9 +104,32 @@ export const authOptions: NextAuthOptions = {
 
       return rst;
     },
-    async signIn(data) {
+    async signIn({ account, credentials, user, email, profile }) {
       try {
-        console.log("callback sing in", data);
+        // console.log(
+        //   "callback sing in",
+        //   account,
+        //   credentials,
+        //   user,
+        //   email,
+        //   profile
+        // );
+        const url = "http://localhost:4000/api/auth/users/googleLogin";
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            tenant: "client-test",
+          },
+          body: JSON.stringify({
+            user,
+            account,
+          }),
+        });
+
+        const rst = await response.json();
+        console.log(rst);
 
         // data.account.id_token = 'token para emiliorivas sin base'
         return true;

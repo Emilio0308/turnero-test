@@ -56,6 +56,7 @@ export default function Login() {
 
   const googleSingin = async () => {
     const signInData = await signIn("google");
+    // mandara a nuestro back
     router.push("/packs");
   };
 
