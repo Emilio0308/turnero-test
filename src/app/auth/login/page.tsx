@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import Button from "@/components/button/Button";
 import Title from "@/components/title/Title";
 import { signIn, useSession } from "next-auth/react";
@@ -9,9 +9,11 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import styles from "../../../styles/form.module.scss";
 import globals from "../../../styles/globals.module.scss";
+import { FcGoogle } from "react-icons/fc";
+import {FadeLoader} from "react-spinners";
+
 export default function Login() {
   const [visiblePassword, setVisiblePassword] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
   const {
     handleSubmit,
     register,
@@ -19,7 +21,20 @@ export default function Login() {
   } = useForm({
     mode: "onSubmit",
   });
+  const { data: session, status } = useSession();
   const router = useRouter();
+
+  
+
+  if (status === "authenticated") {
+    router.push("/packs");
+
+  }
+
+
+
+
+
   const showPassword = () => {
     setVisiblePassword(!visiblePassword);
   };
@@ -40,19 +55,14 @@ export default function Login() {
           confirmButtonText: "Aceptar",
         });
       }
-      setIsAuth(true);
+     
       router.push("/packs");
     } catch (error) {
       console.log(error);
     }
   });
 
-  const session = useSession();
-  useEffect(() => {
-    if (session.status == "authenticated") {
-      router.push("/packs");
-    }
-  }, [isAuth]);
+
 
   const googleSingin = async () => {
     const signInData = await signIn("google");

@@ -17,6 +17,7 @@ interface UserData {
   picture?: string | null;
   sub?: string | null;
   accessToken?: string | null;
+  role?: string;
 }
 
 declare module "next-auth" {
@@ -25,6 +26,7 @@ declare module "next-auth" {
     token: string;
     user: User;
     userData: UserData;
+
   }
 }
 
@@ -43,5 +45,6 @@ declare module "next-auth" {
     createAt?: string | Date;
     updatedAt?: string | Date;
     accessToken?: string | Date;
+    role?: string;
   }
 }

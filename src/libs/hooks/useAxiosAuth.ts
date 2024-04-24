@@ -5,7 +5,7 @@ import { axiosAuth } from "../axios";
 
 const useAxiosAuth = () => {
   const { data: session } = useSession();
-  //!obtener dinamicamente el tenant para tener acceso a la base correspondiente
+  // console.log(session)
   useEffect(() => {
     const reqIntercept = axiosAuth.interceptors.request.use((config) => {
       if (!config.headers.Authorization) {

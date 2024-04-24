@@ -12,6 +12,8 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+ 
+
   const session = await getServerSession(authOptions);
   return (
     <html lang="en">
@@ -19,7 +21,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <body className={globals.container} suppressHydrationWarning={true}>
           {
             session ?
-              <div className="hidden md:block lg:block xl:block"> <Navbar /></div>
+            <div className="hidden md:block lg:block xl:block">
+           <Navbar />
+          </div>
+          
               : ''
           }
 
