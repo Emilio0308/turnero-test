@@ -48,9 +48,12 @@ export const authOptions: NextAuthOptions = {
             }),
           });
 
-          const { body } = await response.json();
+          const rst = await response.json();
+          const { body } = rst
 
-          console.log(body);
+          if (response.status != 200 ) {
+            return null
+          }
           return {
             id: String(body.id),
             name: body.name,

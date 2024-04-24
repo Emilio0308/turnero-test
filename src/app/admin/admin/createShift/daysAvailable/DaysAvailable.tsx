@@ -1,4 +1,4 @@
-import { Day, Props } from "./DaysAvailable.types";
+import { Day, Props } from "./daysAvailable.types";
 import { days } from "./daysAvailable.helper";
 import globals from "@/styles/globals.module.scss";
 

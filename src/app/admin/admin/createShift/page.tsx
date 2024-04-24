@@ -1,16 +1,17 @@
 "use client";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { createShift as CreateShiftModule } from "../../../../libs/shifts";
-import globals from "../../../../styles/globals.module.scss";
-import styles from "../../../../styles/globals.module.scss";
 import Button from "@/components/button/Button";
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
-import DaysAvailable from "./daysAvailable/DaysAvailable";
-import { Day, DayToPush } from "./daysAvailable/DaysAvailable.types";
+import {
+  default as globals,
+  default as styles,
+} from "@/styles/globals.module.scss";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { z } from "zod";
+import DaysAvailable from "./daysAvailable/daysAvailable";
+import { DayToPush } from "./daysAvailable/daysAvailable.types";
 
 const ClassSchema = z.object({
   name: z.string(),
@@ -108,7 +109,7 @@ export default function createShift() {
       });
 
       const result = await axiosAuth.post("class", { ...data, daysAvailable });
-      console.log(result)
+      console.log(result);
     } catch (error) {
       console.log(error);
       Swal.fire({
@@ -139,70 +140,10 @@ export default function createShift() {
           />
           <p>*campo obligatorio</p>
         </div>
-        {/* <div>
-          <label>Nombre del turno</label>
-          <input
-            type="text"
-            id="name"
-            className={`${
-              errors.name?.type !== "required"
-                ? globals.input
-                : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-            }`}
-            placeholder="Nombre del pack"
-            {...register("name", { required: true })}
-            aria-invalid={errors.name ? "true" : "false"}
-          />
-          <p>*campo obligatorio</p>
-        </div> */}
         <DaysAvailable
           selectedDays={selectedDays}
           setSelectedDays={setSelectedDays}
         />
-        {/* <div>
-          <label>
-            Selecciona los días en los que estará disponible el turno
-          </label>
-          <div className="flex flex-wrap">
-            {days.map((day) => (
-              <button
-                type="button"
-                key={day}
-                className={`rounded-md px-4 py-2 m-1 focus:outline-none ${
-                  selectedDays.includes(day)
-                    ? "bg-violet-300 border border-violet-900 text-violet-900"
-                    : "bg-gray-100 border border-gray-400 hover:border-primary"
-                }`}
-                onClick={() => toggleDay(day)}
-              >
-                {day}
-              </button>
-            ))}
-          </div>
-        </div> */}
-        {/* <div>
-          <label>Selecciona la franja horaria del turno</label>
-          <div>
-            <select>
-              <option value=""></option>
-            </select>
-            <a>Hasta</a>
-            <select>
-              <option value=""></option>
-            </select>
-          </div>
-        </div> */}
-        {/* <div>
-          <label>Periodicidad del turno</label>
-          <div>
-            <select>
-              <option>15 minutos</option>
-              <option>30 minutos</option>
-              <option>60 minutos</option>
-            </select>
-          </div>
-        </div> */}
-
         <div className="flex gap-5">
           <label>Periodicidad del turno</label>
           <select
