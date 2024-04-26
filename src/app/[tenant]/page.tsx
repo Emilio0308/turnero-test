@@ -1,15 +1,17 @@
-
 "use client"
 import Button from "@/components/button/Button";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingLayout from "@/components/LoadingLayout/LoadingLayout";
-
+import { usePathname } from 'next/navigation'
 export default function HomePage() {
+  const tenant = usePathname();
+
 
   const { data: session, status } = useSession();
   const router = useRouter();
+console.log(status);
 
   if (status === "loading") {
     return 
@@ -18,9 +20,12 @@ export default function HomePage() {
   }
 
   if (status === "authenticated") {
-    router.push("/packs");
-
+    if (tenant) {
+      router.push(`/${tenant}/packs/login`);
+    }
   }
+
+  console.log(tenant);
 
   return (
     <div className="py-28 px-20">
@@ -36,7 +41,8 @@ export default function HomePage() {
               </div>
             </div>
             <div className="Frame152 flex-col justify-start items-start gap-4 flex">
-            <Link href="/auth/register">
+            
+            <Link href={`${tenant}/auth/register`}>
               <Button text="Registrarme" type="submit" disabled={false} />
                 </Link>
               <div className="Frame146 flex-col justify-start items-center gap-2 flex">
@@ -44,7 +50,7 @@ export default function HomePage() {
                   ¿Ya tienes cuenta?
                 </div>
                 <Link
-                  href="/auth/login"
+                 href={`${tenant}/auth/login`}
                   className="Text self-stretch text-center text-primary-800 text-base font-medium font-['Rubik'] leading-normal cursor-pointer"
                 >
                   Iniciar sesión

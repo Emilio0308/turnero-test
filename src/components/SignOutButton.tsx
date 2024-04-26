@@ -1,7 +1,13 @@
 "use client";
 import { getSession, signOut } from "next-auth/react";
-
+import { usePathname } from "next/navigation";
 const SignOutButton = () => {
+  const pathname = usePathname();
+  const segments = pathname.split('/');
+  const tenant = segments[1]
+  console.log(tenant);
+
+
   // (async () => {
   //   const session = await getSession();
   //   console.log('singout',session?.userData);
@@ -13,7 +19,8 @@ const SignOutButton = () => {
       onClick={() => {
         signOut({
           redirect: true,
-          callbackUrl: "/auth/login",
+          
+          callbackUrl: `/${tenant}/auth/login`,
         });
       }}
     >

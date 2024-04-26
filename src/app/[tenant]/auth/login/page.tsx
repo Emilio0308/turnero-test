@@ -1,4 +1,5 @@
 "use client"
+import { usePathname } from 'next/navigation'
 import Button from "@/components/button/Button";
 import Title from "@/components/title/Title";
 import { signIn, useSession } from "next-auth/react";
@@ -10,11 +11,18 @@ import Swal from "sweetalert2";
 import styles from "@/styles/form.module.scss";
 import globals from "@/styles/globals.module.scss";
 import { FcGoogle } from "react-icons/fc";
-import {FadeLoader} from "react-spinners";
+import { FadeLoader } from "react-spinners";
 import LoadingLayout from "@/components/LoadingLayout/LoadingLayout";
 export default function Login() {
 
-const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const pathname = usePathname();
+  const segments = pathname.split('/');
+  const tenant = segments[1]
+  console.log(tenant);
+
+
 
 
   const [visiblePassword, setVisiblePassword] = useState(false);
@@ -28,15 +36,19 @@ const [isLoading, setIsLoading] = useState(false)
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  
 
+
+// Efecto para manejar la redirección y el estado de carga
+useEffect(() => {
   if (status === "authenticated") {
-    setIsLoading(true)
-    router.push("/packs");
-    setIsLoading(false)
+    setIsLoading(true);
+    if (tenant) {
+      router.push(`/${tenant}/packs`);
+    }
+  } else {
+    setIsLoading(false);
   }
-
-
+}, [status]); // Ejecutar el efecto cuando el estado 'status' cambie
 
 
 
@@ -50,26 +62,29 @@ const [isLoading, setIsLoading] = useState(false)
       const signInData = await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        redirect: false, headers: {
+          "tenant": tenant,
+        },
       });
 
-      if (!signInData?.ok) 
-      setIsLoading(false)
-      {
-        return Swal.fire({
-          title: "¡Error!",
-          text: "Usuario o clave incorrecto",
-          icon: "error",
-          confirmButtonText: "Aceptar",
-        });
+      if (!signInData?.ok)
+      return Swal.fire({
+        title: "¡Error!",
+        text: "Usuario o clave incorrecto",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     
-      }
-     
-      router.push("/packs");
+  
+
+        if (tenant) {
+          router.push(`/${tenant}/packs`);
+        }
       setIsLoading(false)
     } catch (error) {
       console.log(error);
       setIsLoading(false)
+    
     }
   });
 
@@ -79,7 +94,9 @@ const [isLoading, setIsLoading] = useState(false)
     setIsLoading(true)
     const signInData = await signIn("google");
     // mandara a nuestro back
-    router.push("/packs");
+    if (tenant) {
+      router.push(`/${tenant}/packs`);
+    }
     setIsLoading(false)
   };
 
@@ -97,11 +114,10 @@ const [isLoading, setIsLoading] = useState(false)
           <div className="mb-6">
             <label
               htmlFor="email"
-              className={`block mb-2 text-sm font-medium ${
-                errors.email?.type === "required"
+              className={`block mb-2 text-sm font-medium ${errors.email?.type === "required"
                   ? "text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Correo Electrónico
             </label>
@@ -109,11 +125,10 @@ const [isLoading, setIsLoading] = useState(false)
               <input disabled={isLoading}
                 type="text"
                 id="email"
-                className={`${
-                  errors.email?.type !== "required"
+                className={`${errors.email?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="jsmith@mail.com"
                 {...register("email", {
                   required: "Campo requerido",
@@ -140,11 +155,10 @@ const [isLoading, setIsLoading] = useState(false)
           <div className="mb-6">
             <label
               htmlFor="password"
-              className={`block mb-2 text-sm font-medium  ${
-                errors.password?.type === "required"
+              className={`block mb-2 text-sm font-medium  ${errors.password?.type === "required"
                   ? " text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Contraseña
             </label>
@@ -152,11 +166,10 @@ const [isLoading, setIsLoading] = useState(false)
               <input disabled={isLoading}
                 type={visiblePassword ? "text" : "password"}
                 id="password"
-                className={`${
-                  errors.password?.type !== "required"
+                className={`${errors.password?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="*********"
                 {...register("password", { required: true })}
                 aria-invalid={errors.password ? "true" : "false"}
@@ -207,26 +220,27 @@ const [isLoading, setIsLoading] = useState(false)
           </div>
 
           <div className={styles.formPage__button_box}>
-          <Button text={isLoading ? <FadeLoader color="#5F3CAA" /> : "Iniciar sesión"} type="submit" disabled={isLoading} />
+            <Button text={isLoading ? <FadeLoader color="#5F3CAA" /> : "Iniciar sesión"} type="submit" disabled={isLoading} />
 
 
-          <button type="button"
-            className={`rounded-lg flex justify-center p-2 border w-full ${styles.formPage__button_box}`}
-            onClick={googleSingin}
-          >
-            <FcGoogle size={24} className="mr-5"/>
-            Continuar con Google
-          </button>
+            <button type="button"
+              className={`rounded-lg flex justify-center p-2 border w-full ${styles.formPage__button_box}`}
+              onClick={googleSingin}
+            >
+              <FcGoogle size={24} className="mr-5" />
+              Continuar con Google
+            </button>
           </div>
         </form>
         <div className={styles.formPage__account_box}>
-          <Link href="/auth/register">
-            <div className={styles.formPage__with_account}>
-              ¿No tienes cuenta?
-            </div>
-
-            <div className={styles.formPage__login}>Registrate</div>
-          </Link>
+          <div className={styles.formPage__with_account}>
+            ¿No tienes cuenta?
+          </div>
+          {tenant ? (
+            <Link href={`/${tenant}/auth/register`}>
+              <div className={styles.formPage__login}>Registrate</div>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>

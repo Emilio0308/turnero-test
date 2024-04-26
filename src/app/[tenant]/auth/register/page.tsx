@@ -3,15 +3,22 @@ import { useForm } from "react-hook-form";
 import axios, { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import Button from "@/components/button/Button";
-import styles from "../../../styles/form.module.scss";
-import globals from "../../../styles/globals.module.scss";
+import styles from "@/styles/form.module.scss";
+import globals from "@/styles/globals.module.scss";
 import Title from "@/components/title/Title";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useState } from "react";
-
+import { usePathname } from 'next/navigation'
+import LoadingLayout from "@/components/LoadingLayout/LoadingLayout";
 export default function RegisterPage() {
+  const pathname = usePathname();
+  const segments = pathname.split('/'); 
+  const tenant = segments[1]
+  console.log(tenant);
+
+
   const [visiblePassword, setVisiblePassword] = useState(false);
   const {
     handleSubmit,
@@ -24,12 +31,12 @@ export default function RegisterPage() {
   const router = useRouter();
 
   if (status === "loading") {
-    return <p>Cargando...</p>;
+ <LoadingLayout/>
   }
 
   if (status === "authenticated") {
     router.push("/packs");
-    return <p>Redireccionando...</p>;
+    return  <LoadingLayout/>
   }
 
 
@@ -51,16 +58,24 @@ export default function RegisterPage() {
       const userNew = {
         name: data.name,
         lastname: data.lastName,
-        email : data.email,
-        password: data. password,        
-       
+        email: data.email,
+        password: data.password,
+
       };
 
       console.log(data)
       // const res = await axios.post("/api/auth/users/register", userNew);
       const res = await axios.post(
-        "https://s7zuvuun2j.execute-api.us-east-2.amazonaws.com/api/auth/users/register",
-        userNew
+        "https://4x3sn0wkaf.execute-api.us-east-2.amazonaws.com/api/auth/users/register",
+
+        userNew,
+
+{
+          headers: {
+            "tenant": tenant,
+          }
+        }
+
       );
 
       if (res.status === 200) {
@@ -112,11 +127,10 @@ export default function RegisterPage() {
           <div className="mb-6">
             <label
               htmlFor="name"
-              className={`block mb-2 text-sm font-medium  ${
-                errors.name?.type === "required"
+              className={`block mb-2 text-sm font-medium  ${errors.name?.type === "required"
                   ? " text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Nombre
             </label>
@@ -124,11 +138,10 @@ export default function RegisterPage() {
               <input
                 type="text"
                 id="name"
-                className={`${
-                  errors.name?.type !== "required"
+                className={`${errors.name?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="Nombre"
                 {...register("name", { required: true })}
                 aria-invalid={errors.name ? "true" : "false"}
@@ -144,11 +157,10 @@ export default function RegisterPage() {
           <div className="mb-6">
             <label
               htmlFor="lastName"
-              className={`block mb-2 text-sm font-medium  ${
-                errors.lastName?.type === "required"
+              className={`block mb-2 text-sm font-medium  ${errors.lastName?.type === "required"
                   ? " text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Apellido
             </label>
@@ -156,11 +168,10 @@ export default function RegisterPage() {
               <input
                 type="text"
                 id="lastName"
-                className={`${
-                  errors.lastName?.type !== "required"
+                className={`${errors.lastName?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="Apellido"
                 {...register("lastName", { required: true })}
                 aria-invalid={errors.lastName ? "true" : "false"}
@@ -176,11 +187,10 @@ export default function RegisterPage() {
           <div className="mb-6">
             <label
               htmlFor="email"
-              className={`block mb-2 text-sm font-medium ${
-                errors.email?.type === "required"
+              className={`block mb-2 text-sm font-medium ${errors.email?.type === "required"
                   ? "text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Correo Electrónico
             </label>
@@ -188,11 +198,10 @@ export default function RegisterPage() {
               <input
                 type="text"
                 id="email"
-                className={`${
-                  errors.email?.type !== "required"
+                className={`${errors.email?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="Correo electrónico"
                 {...register("email", {
                   required: "Campo requerido",
@@ -219,11 +228,10 @@ export default function RegisterPage() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className={`block mb-2 text-sm font-medium  ${
-                errors.password?.type === "required"
+              className={`block mb-2 text-sm font-medium  ${errors.password?.type === "required"
                   ? " text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Contraseña
             </label>
@@ -231,11 +239,10 @@ export default function RegisterPage() {
               <input
                 type={visiblePassword ? "text" : "password"}
                 id="password"
-                className={`${
-                  errors.password?.type !== "required"
+                className={`${errors.password?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="Contraseña"
                 {...register("password", { required: true })}
                 aria-invalid={errors.password ? "true" : "false"}
@@ -288,11 +295,10 @@ export default function RegisterPage() {
           <div className="mb-6">
             <label
               htmlFor="password2"
-              className={`block mb-2 text-sm font-medium  ${
-                errors.password2?.type === "required"
+              className={`block mb-2 text-sm font-medium  ${errors.password2?.type === "required"
                   ? " text-red-700 dark:text-red-500"
                   : ""
-              }`}
+                }`}
             >
               Repite la contraseña
             </label>
@@ -300,11 +306,10 @@ export default function RegisterPage() {
               <input
                 type={visiblePassword ? "text" : "password"}
                 id="password2"
-                className={`${
-                  errors.password2?.type !== "required"
+                className={`${errors.password2?.type !== "required"
                     ? globals.input
                     : "bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-sm rounded-lg focus:ring-red-500 dark:bg-gray-700 focus:border-red-500 block w-full p-2.5 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500"
-                }`}
+                  }`}
                 placeholder="Repite la contraseña"
                 {...register("password2", { required: true })}
                 aria-invalid={errors.password2 ? "true" : "false"}
@@ -358,13 +363,14 @@ export default function RegisterPage() {
           </div>
         </form>
         <div className={styles.formPage__account_box}>
-          <Link href="/auth/login">
             <div className={styles.formPage__with_account}>
               ¿Ya tienes cuenta?
             </div>
-
-            <div className={styles.formPage__login}>Iniciar sesión</div>
-          </Link>
+            {tenant ? (
+            <Link href={`/${tenant}/auth/login`}>
+              <div className={styles.formPage__login}>Inicia Sesion</div>
+            </Link>
+          ) : null}
         </div>
       </div>
     </div>

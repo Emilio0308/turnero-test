@@ -1,11 +1,14 @@
-import { axiosAuth } from "./axios";
+import  useAxiosAuth  from "./hooks/useAxiosAuth";
 
+const axiosAuth = useAxiosAuth();
 
 const getPacks = async ()=>{
     try {
-        const response = await axiosAuth.get(`packs`)
+        const response = await axiosAuth.get("packs")
         return response.data
     } catch (error: any) {
+        console.log();
+        
         return error.response.data
         
     }

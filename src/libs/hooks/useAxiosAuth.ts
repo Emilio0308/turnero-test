@@ -3,10 +3,9 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { axiosAuth } from "../axios";
+import { usePathname } from 'next/navigation'
 const useAxiosAuth = () => {
-const location = useLocation()
-console.log(location);
-
+  
   const { data: session } = useSession();
 
 

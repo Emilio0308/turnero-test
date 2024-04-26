@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req  ) {
         try {
           console.log("ejecutando autorizer de credenciales");
 
@@ -35,13 +35,15 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
           const url = "https://4x3sn0wkaf.execute-api.us-east-2.amazonaws.com/api//auth/users/logIn";
+console.log(req.headers.referer);
 
           const response = await fetch(url, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "tenant": 'client-test'
+              "tenant": 'gymtest'
             },
+
             body: JSON.stringify({
               email: credentials?.email,
               password: credentials?.password,
