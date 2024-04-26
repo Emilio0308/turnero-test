@@ -1,5 +1,5 @@
 export interface ButtonProps {
-  text: string,
+  text: string| JSX.Element,
   disabled: boolean,
   type: "button" | "submit" | "reset" | undefined;
   id?: string,

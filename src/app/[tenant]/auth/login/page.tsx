@@ -7,12 +7,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import styles from "../../../styles/form.module.scss";
-import globals from "../../../styles/globals.module.scss";
+import styles from "@/styles/form.module.scss";
+import globals from "@/styles/globals.module.scss";
 import { FcGoogle } from "react-icons/fc";
 import {FadeLoader} from "react-spinners";
-
+import LoadingLayout from "@/components/LoadingLayout/LoadingLayout";
 export default function Login() {
+
+const [isLoading, setIsLoading] = useState(false)
+
+
   const [visiblePassword, setVisiblePassword] = useState(false);
   const {
     handleSubmit,
@@ -27,8 +31,9 @@ export default function Login() {
   
 
   if (status === "authenticated") {
+    setIsLoading(true)
     router.push("/packs");
-
+    setIsLoading(false)
   }
 
 
@@ -41,33 +46,41 @@ export default function Login() {
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data;
     try {
+      setIsLoading(true)
       const signInData = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
-      if (!signInData?.ok) {
+      if (!signInData?.ok) 
+      setIsLoading(false)
+      {
         return Swal.fire({
           title: "¡Error!",
           text: "Usuario o clave incorrecto",
           icon: "error",
           confirmButtonText: "Aceptar",
         });
+    
       }
      
       router.push("/packs");
+      setIsLoading(false)
     } catch (error) {
       console.log(error);
+      setIsLoading(false)
     }
   });
 
 
 
   const googleSingin = async () => {
+    setIsLoading(true)
     const signInData = await signIn("google");
     // mandara a nuestro back
     router.push("/packs");
+    setIsLoading(false)
   };
 
   return (
@@ -93,7 +106,7 @@ export default function Login() {
               Correo Electrónico
             </label>
             <div className="relative">
-              <input
+              <input disabled={isLoading}
                 type="text"
                 id="email"
                 className={`${
@@ -136,7 +149,7 @@ export default function Login() {
               Contraseña
             </label>
             <div className="relative">
-              <input
+              <input disabled={isLoading}
                 type={visiblePassword ? "text" : "password"}
                 id="password"
                 className={`${
@@ -194,7 +207,16 @@ export default function Login() {
           </div>
 
           <div className={styles.formPage__button_box}>
-            <Button text="Iniciar sesión" type="submit" disabled={false} />
+          <Button text={isLoading ? <FadeLoader color="#5F3CAA" /> : "Iniciar sesión"} type="submit" disabled={isLoading} />
+
+
+          <button type="button"
+            className={`rounded-lg flex justify-center p-2 border w-full ${styles.formPage__button_box}`}
+            onClick={googleSingin}
+          >
+            <FcGoogle size={24} className="mr-5"/>
+            Continuar con Google
+          </button>
           </div>
         </form>
         <div className={styles.formPage__account_box}>
@@ -205,12 +227,6 @@ export default function Login() {
 
             <div className={styles.formPage__login}>Registrate</div>
           </Link>
-          <button
-            className={`p-2 bg-gray-300 w-full ${styles.formPage__button_box}`}
-            onClick={googleSingin}
-          >
-            Continuar con Google
-          </button>
         </div>
       </div>
     </div>
