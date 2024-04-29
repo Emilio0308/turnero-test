@@ -1,15 +1,20 @@
 "use client";
 import { z } from "zod";
 
-import styles from "../../../../styles/form.module.scss";
-import globals from "../../../../styles/globals.module.scss";
+import globals from "@/styles/globals.module.scss";
+import styles from "@/styles/form.module.scss"
 import { useForm } from "react-hook-form";
 import Button from "@/components/button/Button";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { errorUtil } from "zod/lib/helpers/errorUtil";
 import Swal from "sweetalert2";
-
+import { useSession } from "next-auth/react";
 export default function createService() {
+
+  const { data: session, status } = useSession();
+  console.log(session);
+  
+
   const axiosAuth = useAxiosAuth();
   const ServiceShema = z.object({
     name: z.string(),

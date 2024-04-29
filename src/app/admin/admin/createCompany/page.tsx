@@ -4,8 +4,8 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { getCompanies, createCompanyDb } from "@/libs/company"
-import globals from "../../../../styles/globals.module.scss";
-import styles from "../../../../styles/form.module.scss"
+import globals from "@/styles/globals.module.scss";
+import styles from "@/styles/form.module.scss"
 import Button from "@/components/button/Button";
 
 const CompanySchema = z.object({

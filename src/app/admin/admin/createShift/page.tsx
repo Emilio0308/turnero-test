@@ -1,10 +1,8 @@
 "use client";
 import Button from "@/components/button/Button";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
-import {
-  default as globals,
-  default as styles,
-} from "@/styles/globals.module.scss";
+import globals from "@/styles/globals.module.scss";
+import styles from "@/styles/form.module.scss"
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -99,7 +97,7 @@ export default function createShift() {
 
   const classSubmint = async (data: z.infer<any>) => {
     try {
-      let daysAvailable = {};
+      let daysAvailable: { [key: string]: any } = {};
       selectedDays.forEach((day: DayToPush) => {
         const key = Object.keys(day)[0];
         console.log(key);

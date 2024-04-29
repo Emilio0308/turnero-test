@@ -24,6 +24,7 @@ export default function PacksPage() {
   const { data: session } = useSession();
 console.log(session);
 const username = session?.userData?.name;
+(packs);
 
 
   //funcion de prueba
@@ -59,7 +60,7 @@ const username = session?.userData?.name;
       <p>Elige el servicio que quieres agendar</p>
 
       <div>
-        
+
       </div>
     </div>
   )

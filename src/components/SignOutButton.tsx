@@ -5,7 +5,6 @@ const SignOutButton = () => {
   const pathname = usePathname();
   const segments = pathname.split('/');
   const tenant = segments[1]
-  console.log(tenant);
 
 
   // (async () => {
