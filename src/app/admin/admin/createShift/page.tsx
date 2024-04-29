@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { z } from "zod";
-import DaysAvailable from "./daysAvailable/daysAvailable";
+import DaysAvailable from "./daysAvailable/DaysAvailable";
 import { DayToPush } from "./daysAvailable/daysAvailable.types";
 
 const ClassSchema = z.object({
