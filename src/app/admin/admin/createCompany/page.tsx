@@ -19,7 +19,7 @@ const CompanySchema = z.object({
 
 
 
-export default function createCompany() {
+export default function CreateCompany() {
     const [formData, setFormData] = useState({});
 
     const { handleSubmit, formState: { errors }, register } = useForm<z.infer<typeof CompanySchema>>();
