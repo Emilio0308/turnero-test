@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 export default function createService() {
 
   const { data: session, status } = useSession();
-  console.log(session);
+  //(session);
   
 
   const axiosAuth = useAxiosAuth();
@@ -30,11 +30,11 @@ export default function createService() {
   } = useForm<z.infer<typeof ServiceShema>>();
   const serviceSubmit = async (data: z.infer<typeof ServiceShema>) => {
     try {
-      console.log(data);
+      //(data);
       const result = await axiosAuth.post("services", data);
-      console.log(result.data);
+      //(result.data);
     } catch (error) {
-        console.log(error)
+        //(error)
         Swal.fire({
           title: "Error",
           text: "Peticion rechaza por favor verifique la informacion",

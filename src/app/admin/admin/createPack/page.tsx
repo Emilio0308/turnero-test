@@ -27,7 +27,7 @@ export default function createPacks() {
         .then((res) => {
           setServices(res.data.body);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => //(err));
     }
   }, [session]);
 
@@ -39,11 +39,11 @@ export default function createPacks() {
   const packSubmit = async (data: z.infer<typeof PackSchema>) => {
     try {
       const dataPacks = data;
-      console.log(dataPacks);
+      //(dataPacks);
       const result = await axiosAuth.post("packs", dataPacks);
-      console.log(result.data);
+      //(result.data);
     } catch (error) {
-      console.log(error);
+      //(error);
     }
   };
 

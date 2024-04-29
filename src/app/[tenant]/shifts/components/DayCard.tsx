@@ -8,6 +8,9 @@ interface DayCardProps {
 
 const DayCard = ({ day }: DayCardProps) => {
   let hours: string[] = [];
+
+
+
   function generateDateRange(startDate: Date, startTime: string, endTime: string): string[] {
     const datesAndTimes: string[] = [];
     const [startHour, startMinute] = startTime.split(':').map(Number);
@@ -28,7 +31,7 @@ const DayCard = ({ day }: DayCardProps) => {
   
   // Example usage:
   const exampleStartDate = new Date('2024-01-30T10:00:00.000Z');
-  console.log({exampleStartDate})
+  //({exampleStartDate})
   const exampleStartTime = '08:00';
   const exampleEndTime = '20:00';
   
@@ -37,7 +40,7 @@ const DayCard = ({ day }: DayCardProps) => {
     <div className={styles.carrousel__day}>
       <h3>{day}</h3>
       {hours.map((hour, index) => (
-        <HourCard key={index} hour={hour} />
+        <HourCard key={index} hour={{value:hour}} />
       ))}
     </div>
   );

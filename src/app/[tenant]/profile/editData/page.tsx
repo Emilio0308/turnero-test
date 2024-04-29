@@ -13,7 +13,7 @@ interface FormData {
 
 export default function EditData() {
   const { data: session, update } = useSession();
-  console.log(session);
+  //(session);
   const axiosAuth = useAxiosAuth();
   const username = session?.userData?.name;
   const lastName = session?.userData?.lastname;
@@ -58,7 +58,7 @@ export default function EditData() {
       //*cree una instancia de axios para facilitar el agregar el token a los headers//    
       const response = await axiosAuth.put(`users/${id}`, formData);
       updateSession(formData);
-      console.log("User data updated:", response.data);
+      //("User data updated:", response.data);
     } catch (error) {
       console.error("Error updating user data:", error);
     }

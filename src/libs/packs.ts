@@ -7,7 +7,7 @@ const getPacks = async ()=>{
         const response = await axiosAuth.get("packs")
         return response.data
     } catch (error: any) {
-        console.log();
+        //();
         
         return error.response.data
         

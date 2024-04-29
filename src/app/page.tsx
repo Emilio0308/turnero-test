@@ -11,7 +11,7 @@ export default function HomePage() {
 
   const { data: session, status } = useSession();
   const router = useRouter();
-console.log(status);
+//(status);
 
   if (status === "loading") {
     return 
@@ -25,7 +25,7 @@ console.log(status);
     }
   }
 
-  console.log(tenant);
+  //(tenant);
 
   return (
     <div className="py-28 px-20">

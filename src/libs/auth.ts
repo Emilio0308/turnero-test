@@ -29,13 +29,13 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req  ) {
         try {
-          console.log("ejecutando autorizer de credenciales");
+          //("ejecutando autorizer de credenciales");
 
           if (!credentials?.email || !credentials?.password) {
             return null;
           }
           const url = "https://4x3sn0wkaf.execute-api.us-east-2.amazonaws.com/api//auth/users/logIn";
-console.log(req.headers.referer);
+//(req.headers.referer);
 
           const response = await fetch(url, {
             method: "POST",
@@ -67,7 +67,7 @@ console.log(req.headers.referer);
       
           };
         } catch (error) {
-          console.log(error);
+          //(error);
           return null;
         }
       },
@@ -81,10 +81,10 @@ console.log(req.headers.referer);
   callbacks: {
     async jwt(data) {
       const { token, account, user, session, trigger } = data;
-      // console.log("callback jwt", data);
+      // //("callback jwt", data);
 
       if (user) {
-        console.log("callbackjwt existe user", user);
+        //("callbackjwt existe user", user);
         token.accessToken = user.accessToken
         token.role = user.role
       }
@@ -99,7 +99,7 @@ console.log(req.headers.referer);
     },
     async session(data) {
       const { session, token } = data;
-      // console.log(data)
+      // //(data)
       const rst = {
         ...session,
         userData: token,
@@ -113,7 +113,7 @@ console.log(req.headers.referer);
         // data.account.id_token = 'token para emiliorivas sin base'
         return true;
       } catch (error) {
-        console.log(error);
+        //(error);
         return false;
       }
     },

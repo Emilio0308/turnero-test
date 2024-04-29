@@ -9,7 +9,7 @@ export default function Navbar() {
     const { data: session, status } = useSession();
     const isTenant = session?.userData?.role === "tenant";
 
-console.log(session);
+//(session);
 
     
     if (status === "loading") {

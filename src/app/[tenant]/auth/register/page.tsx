@@ -16,7 +16,7 @@ export default function RegisterPage() {
   const pathname = usePathname();
   const segments = pathname.split('/'); 
   const tenant = segments[1]
-  console.log(tenant);
+  //(tenant);
 
 
   const [visiblePassword, setVisiblePassword] = useState(false);
@@ -63,7 +63,7 @@ export default function RegisterPage() {
 
       };
 
-      console.log(data)
+      //(data)
       // const res = await axios.post("/api/auth/users/register", userNew);
       const res = await axios.post(
         "https://4x3sn0wkaf.execute-api.us-east-2.amazonaws.com/api/auth/users/register",
@@ -89,7 +89,7 @@ export default function RegisterPage() {
         router.refresh();
       }
     } catch (error) {
-      console.log(error)
+      //(error)
       const err = error as AxiosError;
       let title = "Error desconocido";
       let text = err.message;

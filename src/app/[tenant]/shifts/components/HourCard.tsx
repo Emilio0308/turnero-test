@@ -5,7 +5,7 @@ import styles from '../components/carrousel/carrousel.module.scss';
 interface HourCardProps {
   hour: {
     value: string,
-    selected: boolean
+   // selected: boolean
   }
 }
 

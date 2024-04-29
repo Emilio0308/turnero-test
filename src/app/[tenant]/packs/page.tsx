@@ -15,14 +15,14 @@ export default function PacksPage() {
   const pathname = usePathname();
   const segments = pathname.split('/');
   const tenant = segments[1]
-  console.log(tenant);
+  //(tenant);
 
 
   const useAxios = useAxiosAuth()
   const [packs, setPacks] = useState([])
   const [services, setServices] = useState([])
   const { data: session } = useSession();
-console.log(session);
+//(session);
 const username = session?.userData?.name;
 (packs);
 
@@ -48,15 +48,18 @@ const username = session?.userData?.name;
         .then((res) => {
           setServices(res.data.body);
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>console.log(err));
     }
   }, [session]);
 
-  console.log(services);
+  //(services);
 
   return (
     <div>
       <h1 className="w-96 text-gray-800 text-4xl font-medium font-['Rubik'] leading-10 pb-10 whitespace-nowrap">Hola👋, {username}!</h1>
+      <div>
+
+      </div>
       <p>Elige el servicio que quieres agendar</p>
 
       <div>

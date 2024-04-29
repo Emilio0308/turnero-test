@@ -6,7 +6,7 @@ export default function ProfilePage() {
 
   const { data: session } = useSession();
   const username = session?.userData?.name;
-  console.log(session);
+  //(session);
   
 
 

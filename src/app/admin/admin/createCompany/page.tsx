@@ -25,10 +25,10 @@ export default function CreateCompany() {
     const { handleSubmit, formState: { errors }, register } = useForm<z.infer<typeof CompanySchema>>();
     const updatedFormData = { ...formData, DBInstanceClass: 'db.t3.micro' };
     const onSubmit = async (formData: any) => {
-        console.log(updatedFormData);
+        //(updatedFormData);
         try {
             await createCompanyDb(updatedFormData);
-            console.log("Empresa creada exitosamente");
+            //("Empresa creada exitosamente");
             // Aquí podrías redirigir a otra página o mostrar un mensaje de éxito
         } catch (error) {
             console.error("Error al crear empresa:", error);

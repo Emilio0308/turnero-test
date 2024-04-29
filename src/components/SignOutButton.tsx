@@ -9,7 +9,7 @@ const SignOutButton = () => {
 
   // (async () => {
   //   const session = await getSession();
-  //   console.log('singout',session?.userData);
+  //   //('singout',session?.userData);
   // })();
 
   return (

@@ -20,7 +20,7 @@ export default function Login() {
   const pathname = usePathname();
   const segments = pathname.split('/');
   const tenant = segments[1]
-  console.log(tenant);
+  //(tenant);
 
 
 
@@ -75,6 +75,7 @@ useEffect(() => {
         confirmButtonText: "Aceptar",
       });
     
+  //(signInData);
   
 
         if (tenant) {
@@ -82,7 +83,7 @@ useEffect(() => {
         }
       setIsLoading(false)
     } catch (error) {
-      console.log(error);
+      //(error);
       setIsLoading(false)
     
     }

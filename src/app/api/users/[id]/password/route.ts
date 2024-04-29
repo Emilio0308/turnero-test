@@ -69,7 +69,7 @@ export async function POST(request: Request, { params }: Params) {
   }
   const { createAt, updatedAt, password, ...payload } = user;
   const recovertoken = generateJWT(payload);
-  console.log(recovertoken);
+  //(recovertoken);
   const url = `http://localhost:3000/${recovertoken}`;
 
   const template = await fs.readFile("plantillas/recoverPassword.hbs", "utf8");

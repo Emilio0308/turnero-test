@@ -69,7 +69,7 @@ export default function createShift() {
   //       .then((res) => {
   //         setPacks(res.data.body);
   //       })
-  //       .catch((err) => console.log(err));
+  //       .catch((err) => //(err));
   //   }
   // }, [session]);
 
@@ -78,10 +78,10 @@ export default function createShift() {
       axiosAuth
         .get("services")
         .then((res) => {
-          console.log(res);
+          //(res);
           setServices(res.data.body);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => //(err));
     }
   }, [session]);
 
@@ -100,16 +100,16 @@ export default function createShift() {
       let daysAvailable: { [key: string]: any } = {};
       selectedDays.forEach((day: DayToPush) => {
         const key = Object.keys(day)[0];
-        console.log(key);
+        //(key);
         daysAvailable[key] = {
           ...day[key],
         };
       });
 
       const result = await axiosAuth.post("class", { ...data, daysAvailable });
-      console.log(result);
+      //(result);
     } catch (error) {
-      console.log(error);
+      //(error);
       Swal.fire({
         title: "Error",
         text: "Peticion rechaza por favor verifique la informacion",
