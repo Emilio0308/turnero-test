@@ -27,7 +27,9 @@ export default function createPacks() {
         .then((res) => {
           setServices(res.data.body);
         })
-        .catch((err) => //(err));
+        .catch((err) => {
+          console.log(err)
+        });
     }
   }, [session]);
 

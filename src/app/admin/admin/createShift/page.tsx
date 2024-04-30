@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { z } from "zod";
 import DaysAvailable from "./daysAvailable/DaysAvailable";
-import { DayToPush } from "./daysAvailable/daysAvailable.types";
+import { DayToPush } from "./daysAvailable/DaysAvailable.types";
 
 const ClassSchema = z.object({
   name: z.string(),
@@ -81,7 +81,9 @@ export default function createShift() {
           //(res);
           setServices(res.data.body);
         })
-        .catch((err) => //(err));
+        .catch((err) => (
+          console.log(err)
+        ));
     }
   }, [session]);
 
