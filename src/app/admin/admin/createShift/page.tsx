@@ -168,7 +168,7 @@ export default function CreateShift() {
           >
             <option value="">--Please choose an option--</option>
             {services.map((s) => (
-              <option value={s.id}>{s.name}</option>
+              <option key={s.id} value={s.id}>{s.name}</option>
             ))}
           </select>
         </div>
