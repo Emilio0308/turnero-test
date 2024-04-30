@@ -1,17 +1,7 @@
 import Link from "next/link";
+import { Props } from "./Services.types";
 
-interface Props {
-  service: {
-    id: string;
-    name: string;
-    type: string;
-    duration: string;
-    capacity: number;
-    active: boolean;
-    createdat: string;
-    updatedat: string;
-  };
-}
+
 export default function ServiceCard(props: Props) {
   const { service } = props;
   console.log(service);

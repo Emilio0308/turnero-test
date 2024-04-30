@@ -1,30 +1,37 @@
-"use client"
-import { useState } from 'react';
-import styles from '../components/carrousel/carrousel.module.scss';
+"use client";
+import styles from "../components/carrousel/carrousel.module.scss";
 
 interface HourCardProps {
   hour: {
-    value: string,
-   // selected: boolean
-  }
+    value: string;
+    isValid: boolean;
+  };
+  setFormData: any;
 }
 
-const HourCard = ({ hour }: HourCardProps) => {
-  const [selected, setSelected] = useState<string | null>(null);
-
-  const newHour = new Date(hour.value);
-  const isSelected = selected === newHour.getHours().toLocaleString();
+const HourCard = (props: HourCardProps) => {
+  const { hour, setFormData } = props;
 
   const handleClick = () => {
-    setSelected(prevSelected => (prevSelected !== newHour.getHours().toLocaleString() ? newHour.getHours().toLocaleString() : null));
+    if (!hour.isValid) {
+      return;
+    }
+    setFormData((prev) => {
+      return {
+        ...prev,
+        shift_from: hour.value,
+      };
+    });
   };
 
   return (
     <div
-      className={`${styles.carrousel__hour} ${isSelected ? styles.carrousel__hour__selected : ''}`}
+      className={`${styles.carrousel__hour} ${
+        hour.isValid ? "" : "opacity-60"
+      }`}
       onClick={handleClick}
     >
-      {`${newHour.getHours()}:${newHour.getMinutes()}0`}
+      {hour.value}
     </div>
   );
 };

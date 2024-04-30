@@ -1,46 +1,80 @@
+import { useSearchParams } from "next/navigation";
+import styles from "../components/carrousel/carrousel.module.scss";
 import HourCard from "./HourCard";
-import styles from '../components/carrousel/carrousel.module.scss'
+import { useState } from "react";
 
 interface DayCardProps {
-  day: string;
+  dayData: {
+    date: string;
+    day: string;
+    range: {
+      endTime: string;
+      startTime: string;
+    } | null;
+  };
+  periodicity: number;
 }
 
+interface hour {
+  value: string;
+  isValid: boolean;
+}
 
-const DayCard = ({ day }: DayCardProps) => {
-  let hours: string[] = [];
+const DayCard = ({ dayData, periodicity }: DayCardProps) => {
+  const searchParams = useSearchParams();
+  const packId = searchParams.get("packId");
+  const serviceId = searchParams.get("serviceId");
 
+  const [formData, setFormData] = useState<any>({
+    packId,
+    timeRange: periodicity,
+    date: dayData.date,
+    shift_from: "",
+    shift_to: "",
+  });
 
+  console.log(formData)
 
-  function generateDateRange(startDate: Date, startTime: string, endTime: string): string[] {
-    const datesAndTimes: string[] = [];
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
-    // Crear la fecha y hora de inicio
-    const startDateTime = new Date(startDate);
-    startDateTime.setHours(startHour, startMinute, 0, 0);
-    // Crear la fecha y hora de fin
-    const endDateTime = new Date(startDate);
-    endDateTime.setHours(endHour, endMinute, 0, 0);
-  
-    const interval = 60 * 60 * 1000; // 1-hour interval
-    for (let currentTime = startDateTime; currentTime <= endDateTime; currentTime.setTime(currentTime.getTime() + interval)) {
-      datesAndTimes.push(currentTime.toString());
+  const range = dayData.range;
+  function generateHourRange(startTime: string, endTime: string): hour[] {
+    const hours: hour[] = [];
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+    const [endHour, endMinute] = endTime.split(":").map(Number);
+
+    for (let hour = startHour; hour <= endHour; hour++) {
+      for (let minute = 0; minute < 60; minute += periodicity) {
+        const formattedHour = hour.toString().padStart(2, "0");
+        const formattedMinute = minute.toString().padStart(2, "0");
+
+        const value = `${formattedHour}:${formattedMinute}`;
+
+        const hora1 = range.startTime;
+        const hora2 = range.endTime;
+
+        const date1 = new Date(`2024-01-01T${hora1}:00`);
+        const date2 = new Date(`2024-01-01T${hora2}:00`);
+        const currentDate = new Date(`2024-01-01T${value}:00`);
+        const isValid = currentDate > date1 && currentDate < date2;
+
+        const hourToPush = {
+          value,
+          isValid: range ? isValid : false,
+        };
+        hours.push(hourToPush);
+      }
     }
-    return datesAndTimes;
+
+    return hours;
   }
-  
-  // Example usage:
-  const exampleStartDate = new Date('2024-01-30T10:00:00.000Z');
-  //({exampleStartDate})
-  const exampleStartTime = '08:00';
-  const exampleEndTime = '20:00';
-  
- hours = generateDateRange(exampleStartDate, exampleStartTime, exampleEndTime);
+
+  const hours = generateHourRange("00:06", "22:00");
+
   return (
     <div className={styles.carrousel__day}>
-      <h3>{day}</h3>
+      <h3>{dayData.day}</h3>
+      <div>{dayData.date}</div>
       {hours.map((hour, index) => (
-        <HourCard key={index} hour={{value:hour}} />
+        <HourCard key={index} hour={hour} setFormData={setFormData} />
       ))}
     </div>
   );

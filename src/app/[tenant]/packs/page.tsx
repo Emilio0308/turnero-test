@@ -4,10 +4,11 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ServiceCard from "./components/ServiceCard/ServiceCard";
 import { FadeLoader } from "react-spinners";
+import { Service } from "./components/ServiceCard/Services.types";
 
 export default function PacksPage() {
   const useAxios = useAxiosAuth();
-  const [services, setServices] = useState([]);
+  const [services, setServices] = useState<Service[]>([]);
   const { data: session } = useSession();
   const username = session?.userData?.name;
   useEffect(() => {
@@ -39,3 +40,4 @@ export default function PacksPage() {
     </div>
   );
 }
+
