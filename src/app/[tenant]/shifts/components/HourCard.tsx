@@ -1,12 +1,21 @@
 "use client";
+import { Dispatch, SetStateAction } from "react";
 import styles from "../components/carrousel/carrousel.module.scss";
+
+interface From {
+  packId: string;
+  timeRange: string; // ¿periodicidad es un número?
+  date: string; // ¿dayData.date es una cadena?
+  shift_from: string;
+  shift_to: string;
+}
 
 interface HourCardProps {
   hour: {
     value: string;
     isValid: boolean;
   };
-  setFormData: any;
+  setFormData: Dispatch<SetStateAction<From>>;
 }
 
 const HourCard = (props: HourCardProps) => {

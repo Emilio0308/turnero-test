@@ -81,6 +81,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.accessToken = user.accessToken;
         token.role = user.role;
+        token.id = user.id
       }
       if (trigger == "update") {
         const rst = {
@@ -120,6 +121,7 @@ export const authOptions: NextAuthOptions = {
           const rst = await response.json();
           user.role = rst.body.role;
           user.accessToken = rst.body.id_token;
+          user.id = rst.body.id;
         }
         return true;
       } catch (error) {

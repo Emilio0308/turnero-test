@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import ClassDescription from "./components/ClassDescription";
 
 const Shift = () => {
-  const useAxios = useAxiosAuth();
   const { data: session } = useSession();
+  const useAxios = useAxiosAuth();
   const [classData, setClassData] = useState([]);
   const [currentClassData, setCurrentClassData] = useState(null);
 

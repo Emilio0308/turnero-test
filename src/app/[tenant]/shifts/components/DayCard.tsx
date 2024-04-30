@@ -2,6 +2,8 @@ import { useSearchParams } from "next/navigation";
 import styles from "../components/carrousel/carrousel.module.scss";
 import HourCard from "./HourCard";
 import { useState } from "react";
+import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
+import { useSession } from "next-auth/react";
 
 interface DayCardProps {
   dayData: {
@@ -20,20 +22,61 @@ interface hour {
   isValid: boolean;
 }
 
+interface From {
+  packId: string;
+  timeRange: string;
+  date: string;
+  shift_from: string;
+  shift_to: string;
+}
+
 const DayCard = ({ dayData, periodicity }: DayCardProps) => {
   const searchParams = useSearchParams();
   const packId = searchParams.get("packId");
   const serviceId = searchParams.get("serviceId");
+  const useAxios = useAxiosAuth();
 
-  const [formData, setFormData] = useState<any>({
+  function transformarFecha(fecha: string) {
+    const [dia, mes, anio] = fecha.split("/");
+    return `${anio}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
+  }
+
+  const [formData, setFormData] = useState<From>({
     packId,
-    timeRange: periodicity,
-    date: dayData.date,
+    timeRange: `${periodicity} min`,
+    date: transformarFecha(dayData.date),
     shift_from: "",
     shift_to: "",
   });
 
-  console.log(formData)
+  function sumarMinutos(hora: string, minutosASumar: number): string {
+    const [horaStr, minutosStr] = hora.split(":");
+    const horas = parseInt(horaStr, 10);
+    const minutos = parseInt(minutosStr, 10);
+    const totalMinutos = horas * 60 + minutos + minutosASumar;
+    const nuevasHoras = Math.floor(totalMinutos / 60);
+    const nuevosMinutos = totalMinutos % 60;
+    const nuevaHoraStr = `${nuevasHoras
+      .toString()
+      .padStart(2, "0")}:${nuevosMinutos.toString().padStart(2, "0")}`;
+
+    return nuevaHoraStr;
+  }
+
+  const { data: session } = useSession();
+  const userId = session.userData.id
+
+  const handleSaveShift = () => {
+    const shift_to = sumarMinutos(formData.shift_from, periodicity);
+    console.log(shift_to);
+    console.log(userId)
+    useAxios
+      .post(`shift/${userId}`, { ...formData, shift_to })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const range = dayData.range;
   function generateHourRange(startTime: string, endTime: string): hour[] {
@@ -71,6 +114,9 @@ const DayCard = ({ dayData, periodicity }: DayCardProps) => {
 
   return (
     <div className={styles.carrousel__day}>
+      <button className="" onClick={handleSaveShift}>
+        agregar shift
+      </button>
       <h3>{dayData.day}</h3>
       <div>{dayData.date}</div>
       {hours.map((hour, index) => (
