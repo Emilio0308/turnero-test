@@ -1,70 +1,41 @@
-"use client"
-import PackCard from "./components/PackCard";
-//import { getPacks } from "@/libs/packs";
-import { useEffect, useState } from "react";
-import axios from "axios";
+"use client";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
-import LoadingLayout from "@/components/LoadingLayout/LoadingLayout";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
+import ServiceCard from "./components/ServiceCard/ServiceCard";
+import { FadeLoader } from "react-spinners";
 
 export default function PacksPage() {
-  const router = useRouter()
-  const pathname = usePathname();
-  const segments = pathname.split('/');
-  const tenant = segments[1]
-  //(tenant);
-
-
-  const useAxios = useAxiosAuth()
-  const [packs, setPacks] = useState([])
-  const [services, setServices] = useState([])
+  const useAxios = useAxiosAuth();
+  const [services, setServices] = useState([]);
   const { data: session } = useSession();
-//(session);
-const username = session?.userData?.name;
-(packs);
-
-
-  //funcion de prueba
+  const username = session?.userData?.name;
   useEffect(() => {
-    if (session?.token) {
-      useAxios
-        .get("packs")
-        .then((res) => {
-
-          setPacks(res.data.body);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [session]);
-  //
-
-  useEffect(() => {
+    console.log(session)
     if (session?.token) {
       useAxios
         .get("services")
         .then((res) => {
           setServices(res.data.body);
         })
-        .catch((err) =>console.log(err));
+        .catch((err) => console.log(err));
     }
   }, [session]);
 
-  //(services);
-
   return (
     <div>
-      <h1 className="w-96 text-gray-800 text-4xl font-medium font-['Rubik'] leading-10 pb-10 whitespace-nowrap">Hola👋, {username}!</h1>
-      <div>
-
-      </div>
-      <p>Elige el servicio que quieres agendar</p>
-
-      <div>
-
-      </div>
+      <h1 className="w-96 text-gray-800 text-4xl font-medium font-['Rubik'] leading-10 pb-10 whitespace-nowrap">
+        Hola👋, {username}!
+      </h1>
+      <div></div>
+      <p className="mb-[60px]">Elige el servicio que quieres agendar</p>
+      <section className="grid grid-cols-[repeat(auto-fill,_minmax(192px,_1fr))] gap-[25px]">
+        {services ? (
+          services.map((service) => <ServiceCard service={service} />)
+        ) : (
+          <FadeLoader color="#5F3CAA" />
+        )}
+      </section>
     </div>
-  )
+  );
 }
