@@ -1,14 +1,8 @@
-import { prisma } from "@/libs/prisma";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { compare } from "bcrypt";
-import jwt from "jsonwebtoken";
 import NextAuth, { NextAuthOptions } from "next-auth";
-import { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
-  // adapter: PrismaAdapter(prisma) as Adapter,
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
