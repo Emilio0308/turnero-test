@@ -16,7 +16,7 @@ const PackSchema = z.object({
   duration: z.string(),
 });
 
-export default function createPacks() {
+export default function CreatePacks() {
   const [services, setServices] = useState([]);
   const axiosAuth = useAxiosAuth();
   const { data: session } = useSession();

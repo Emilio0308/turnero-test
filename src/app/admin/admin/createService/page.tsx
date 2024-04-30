@@ -9,7 +9,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { errorUtil } from "zod/lib/helpers/errorUtil";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
-export default function createService() {
+export default function CreateService() {
 
   const { data: session, status } = useSession();
   //(session);

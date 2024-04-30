@@ -48,7 +48,7 @@ const ClassSchema = z.object({
   // pilates o osteopatria
 });
 
-export default function createShift() {
+export default function CreateShift() {
   const {
     handleSubmit,
     formState: { errors },
