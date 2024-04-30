@@ -2,7 +2,6 @@
 import Button from "@/components/button/Button";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createPacks as CreatePackModule } from "../../../../libs/packs";
 import globals from "../../../../styles/globals.module.scss";
 import { useEffect, useState } from "react";
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
