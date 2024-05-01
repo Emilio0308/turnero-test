@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PackCard from "../components/packCard/PackCard";
 
-export default function page() {
+export default function ServiceIdPage() {
   const useAxios = useAxiosAuth();
   const { data: session } = useSession();
   const params = useParams();

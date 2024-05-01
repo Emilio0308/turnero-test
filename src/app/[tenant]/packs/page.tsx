@@ -6,7 +6,7 @@ import ServiceCard from "./components/ServiceCard/ServiceCard";
 import { FadeLoader } from "react-spinners";
 import { Service } from "./components/ServiceCard/Services.types";
 
-export default function page() {
+export default function PackPage() {
   const useAxios = useAxiosAuth();
   const [services, setServices] = useState<Service[]>([]);
   const { data: session } = useSession();

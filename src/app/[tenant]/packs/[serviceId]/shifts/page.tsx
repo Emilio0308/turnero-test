@@ -55,7 +55,7 @@ import { useEffect, useState } from "react";
 import MainContent from "./components/MainContent";
 
 
-export default function page() {
+export default function ShiftPage() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
