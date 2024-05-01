@@ -49,7 +49,6 @@ export const authOptions: NextAuthOptions = {
 
           const rst = await response.json();
           const { body } = rst;
-          console.log(response);
           console.log(rst);
           if (response.status != 200) {
             return null;
@@ -81,7 +80,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.accessToken = user.accessToken;
         token.role = user.role;
-        token.id = user.id
+        token.id = user.id;
       }
       if (trigger == "update") {
         const rst = {
@@ -90,6 +89,7 @@ export const authOptions: NextAuthOptions = {
         };
         return rst;
       }
+      console.log(token)
       return token;
     },
     async session(data) {
@@ -103,8 +103,8 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ account, credentials, user, email, profile }) {
       try {
-        console.log(tenant);
-        if (tenant) {
+        if (tenant && account.provider == "google") {
+          console.log(tenant);
           const url =
             "https://4x3sn0wkaf.execute-api.us-east-2.amazonaws.com/api/auth/users/googleLogin";
           const response = await fetch(url, {

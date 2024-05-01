@@ -3,6 +3,7 @@ import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import ClassDescription from "./ClassDescription";
+import { useParams } from "next/navigation";
 
 const MainContent = () => {
   const { data: session } = useSession();
@@ -10,11 +11,14 @@ const MainContent = () => {
   const [classData, setClassData] = useState([]);
   const [currentClassData, setCurrentClassData] = useState(null);
 
+  const { serviceId } = useParams();
+
   useEffect(() => {
     if (session?.token) {
       useAxios
-        .get("class")
+        .get(`class?serviceId=${serviceId}`)
         .then((res) => {
+          console.log(res.data.body)
           setClassData(res.data.body);
         })
         .catch((err) => console.log(err));

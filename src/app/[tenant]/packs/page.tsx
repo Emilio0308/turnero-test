@@ -12,7 +12,6 @@ export default function page() {
   const { data: session } = useSession();
   const username = session?.userData?.name;
   useEffect(() => {
-    console.log(session)
     if (session?.token) {
       useAxios
         .get("services")
