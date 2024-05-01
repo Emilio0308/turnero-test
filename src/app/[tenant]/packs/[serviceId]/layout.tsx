@@ -11,8 +11,6 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <main className={globals.container}>{children}</main>
-    </html>
+      <main>{children}</main>
   );
 }

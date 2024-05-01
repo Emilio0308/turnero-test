@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoadingLayout from "@/components/LoadingLayout/LoadingLayout";
 import { usePathname } from 'next/navigation'
-export default function HomePage() {
+export default function LandingPage() {
   const tenant = usePathname();
 
 

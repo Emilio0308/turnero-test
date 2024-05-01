@@ -2,28 +2,24 @@
 import useAxiosAuth from "@/libs/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import ClassDescription from "./components/ClassDescription";
+import ClassDescription from "./ClassDescription";
 
-const Shift = () => {
+const MainContent = () => {
   const { data: session } = useSession();
   const useAxios = useAxiosAuth();
   const [classData, setClassData] = useState([]);
   const [currentClassData, setCurrentClassData] = useState(null);
 
   useEffect(() => {
-    // console.log(session);
     if (session?.token) {
       useAxios
         .get("class")
         .then((res) => {
-          // console.log(res.data.body);
           setClassData(res.data.body);
         })
         .catch((err) => console.log(err));
     }
   }, [session]);
-
-
 
   return (
     <div>
@@ -47,4 +43,4 @@ const Shift = () => {
   );
 };
 
-export default Shift;
+export default MainContent;

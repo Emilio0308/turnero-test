@@ -28,7 +28,7 @@ export default function page() {
     <section>
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(192px,_1fr))] gap-[25px]">
         {list.map((pack) => (
-          <PackCard pack={pack} />
+          <PackCard key={pack.id} pack={pack} />
         ))}
       </div>
     </section>

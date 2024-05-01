@@ -1,8 +1,7 @@
-import { authOptions } from "@/libs/auth";
-import type { Metadata } from "next";
-import { getServerSession } from "next-auth";
 import "@/app/globals.css";
+import NavbarUser from "@/components/NavbarUser";
 import globals from "@/styles/globals.module.scss";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Turnex",
@@ -12,10 +11,10 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await getServerSession(authOptions);
   return (
-    <html lang="en">
-      <main className={globals.container}>{children}</main>
-    </html>
+    <>
+      <NavbarUser />
+      <main>{children}</main>
+    </>
   );
 }

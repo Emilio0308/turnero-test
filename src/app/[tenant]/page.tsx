@@ -14,18 +14,9 @@ export default function HomePage() {
 //(status);
 
   if (status === "loading") {
-    return 
-  <LoadingLayout/>
-    
+    return <LoadingLayout/>
   }
 
-  if (status === "authenticated") {
-    if (tenant) {
-      router.push(`/${tenant}/packs/login`);
-    }
-  }
-
-  //(tenant);
 
   return (
     <div className="py-28 px-20">

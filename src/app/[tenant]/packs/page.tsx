@@ -6,7 +6,7 @@ import ServiceCard from "./components/ServiceCard/ServiceCard";
 import { FadeLoader } from "react-spinners";
 import { Service } from "./components/ServiceCard/Services.types";
 
-export default function PacksPage() {
+export default function page() {
   const useAxios = useAxiosAuth();
   const [services, setServices] = useState<Service[]>([]);
   const { data: session } = useSession();
@@ -32,7 +32,7 @@ export default function PacksPage() {
       <p className="mb-[60px]">Elige el servicio que quieres agendar</p>
       <section className="grid grid-cols-[repeat(auto-fill,_minmax(192px,_1fr))] gap-[25px]">
         {services ? (
-          services.map((service) => <ServiceCard service={service} />)
+          services.map((service) => <ServiceCard key={service.id} service={service} />)
         ) : (
           <FadeLoader color="#5F3CAA" />
         )}
