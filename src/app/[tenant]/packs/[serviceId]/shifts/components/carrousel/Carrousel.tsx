@@ -49,9 +49,9 @@ const Carrousel = ({ days, values, periodicity, data }: CarouselProps) => {
 
   function generarFechasDisponibles() {
     const fechasDisponibles = [];
-    const hoy = new Date(); // Obtenemos la fecha actual
+    const nowDate = new Date();
     for (let i = 0; i < 7; i++) {
-      const fecha = new Date(hoy.getTime() + i * 24 * 60 * 60 * 1000); // Añadimos i días a la fecha actual
+      const fecha = new Date(nowDate.getTime() + i * 24 * 60 * 60 * 1000); // Añadimos i días a la fecha actual
       fechasDisponibles.push(fecha); // Agregamos la fecha al array
     }
     return fechasDisponibles;
@@ -76,6 +76,7 @@ const Carrousel = ({ days, values, periodicity, data }: CarouselProps) => {
 
     const dayName = daysWeek[dayIndex];
     return {
+      ISOSDate: fecha,
       date: `${day}/${month}/${year}`,
       day: dayName,
       range: dayName? data[daysWeek[dayIndex]] : null,

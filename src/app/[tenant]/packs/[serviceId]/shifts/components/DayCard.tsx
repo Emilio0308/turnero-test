@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 
 interface DayCardProps {
   dayData: {
+    ISOSDate: any;
     date: string;
     day: string;
     range: {
@@ -36,15 +37,15 @@ const DayCard = ({ dayData, periodicity }: DayCardProps) => {
   const serviceId = searchParams.get("serviceId");
   const useAxios = useAxiosAuth();
 
-  function transformarFecha(fecha: string) {
-    const [dia, mes, anio] = fecha.split("/");
-    return `${anio}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
-  }
+  // function transformarFecha(fecha: string) {
+  //   const [dia, mes, año] = fecha.split("/");
+  //   return `${año}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
+  // }
 
   const [formData, setFormData] = useState<From>({
     packId,
     timeRange: `${periodicity} min`,
-    date: transformarFecha(dayData.date),
+    date: dayData.ISOSDate,
     shift_from: "",
     shift_to: "",
   });
@@ -64,12 +65,12 @@ const DayCard = ({ dayData, periodicity }: DayCardProps) => {
   }
 
   const { data: session } = useSession();
-  const userId = session.userData.id
+  const userId = session.userData.id;
 
   const handleSaveShift = () => {
     const shift_to = sumarMinutos(formData.shift_from, periodicity);
     console.log(shift_to);
-    console.log(userId)
+    console.log(userId);
     useAxios
       .post(`shift/${userId}`, { ...formData, shift_to })
       .then((res) => {

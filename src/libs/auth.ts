@@ -25,8 +25,6 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         try {
-          //("ejecutando autorizer de credenciales");
-
           if (!credentials?.email || !credentials?.password) {
             return null;
           }
@@ -89,7 +87,6 @@ export const authOptions: NextAuthOptions = {
         };
         return rst;
       }
-      console.log(token)
       return token;
     },
     async session(data) {
